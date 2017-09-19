@@ -9,17 +9,8 @@ class elem_plan(object):
 
 
 class model(object):
-    """description of class"""
-    '''class Criterium(object):
-        D = None
-        A = None
-        E = None
-        Ф = None
-        Lymbda = None
-        MV = None
-        G = None'''
-            
 
+          
 
     def __init__(self,plan):
         self.plan = plan  
@@ -42,13 +33,6 @@ class model(object):
         self.D = np.linalg.inv(self.M)
 
     def Calc_Criterium(self):
-       #self.Criterium.D = self.Calc_D()
-       #self.Criterium.A = self.Calc_A()
-       #self.Criterium.E = self.Calc_E()
-       #self.Criterium.Ф = self.Calc_Ф()
-       #self.Criterium.Lymbda = self.Calc_Lymabda()
-       #self.Criterium.MV = self.Calc_MV()
-       #self.Criterium.G = self.Calc_G()
        self.crit_D = self.Calc_D()
        self.crit_A = self.Calc_A()
        self.crit_E = self.Calc_E()
@@ -67,7 +51,6 @@ class model(object):
         return np.max(np.linalg.eig(self.D)[0])
     def Calc_A(self):
         return self.D.trace()
-    #Допилить
     def Calc_Ф(self, p=2):
         return ((1.0 / self.m)* (self.D**p).trace())** (1.0/p)
     def Calc_Lymabda(self):
