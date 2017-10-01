@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4619c16e-76e7-4baf-b7bd-b9d9c5fb3d14</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PIAA_lab1.py</StartupFile>
+    <StartupFile>PIAA_lab2.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -29,6 +29,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PIAA_lab1.py" />
+    <Compile Include="PIAA_lab2.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="input.txt" />

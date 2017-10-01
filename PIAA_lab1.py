@@ -2,6 +2,9 @@ import numpy as np
 from  IO import *
 from model import *
 import matplotlib.pyplot as plt
+
+
+
 plan_list = IO.input_plans_from_file('input.txt')
 pp = [model(plan) for plan in plan_list ]
 

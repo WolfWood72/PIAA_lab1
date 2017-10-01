@@ -15,5 +15,11 @@ class IO(object):
             #plan.append(list(elem_plan(float(x[0]),float(x[1])) for x in zip(x,p)))
         print(plan)
         return plan
-
+    
+    def auto_plan(w,x):
+        plan = []
+        for i in x:
+            for j in x:
+                plan.append(elem_plan((i,j),w))
+        return plan
 
