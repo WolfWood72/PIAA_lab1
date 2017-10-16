@@ -7,4 +7,5 @@ import matplotlib.pyplot as plt
 x = [-1 , -0.5 ,0 , 0.5 , 1]
 plan = IO.auto_plan(1/25,x)
 pp = model(plan)
+pp.optimize()
 a = 1

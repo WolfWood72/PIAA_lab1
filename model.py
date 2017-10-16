@@ -49,47 +49,69 @@ class model(object):
     
     def Gradient(self,plan):
         Grad = []
-        for i in range(len(plan)):
+        cur_plan = model(plan)
+        for k in range(len(plan)):
             f = self.f(self.plan[k].x)
-            M = np.zeros((self.m,self.m))
-            for i in range(len(plan)):
-                    M[i] +=  f[i] * f
-            Grad.append(np.linalg.det(M))
+            M_xk = np.zeros((self.m,self.m))
+            '''for i in range(self.m):
+                    M_xk[i] +=  f[i] * f * plan[k].p'''
+            Grad.append(f.T@cur_plan.D@f)
+
         return np.array(Grad)
 
     def MakeG(self,n,q):
-        Aq = np.zeros((q + 1,n))
+        '''Aq = np.zeros((q + 1,n)).T
         Aq[n-1] = 1        
         for i in range(q+1):
             Aq[i][i] = -1
-      
-        return np.eye(n,n) - Aq.T@np.linalg.inv(Aq@Aq.T)@Aq
+        tt = np.linalg.det(Aq@Aq.T)
+        if tt == 0:
+            return np.eye(n,n)
+        else:
+            return np.eye(n,n) - Aq.T@np.linalg.inv(Aq@Aq.T)@Aq
+        '''
+        pass
 
+
+    def phi(self,p_x,p_ksi):
+        x = model(p_x)
+        ksi = model(p_ksi)
+        return (ksi.D@x.M).trace()
     def NextPlan(self,plan,lyambda,gradient,n,q):
         G = self.MakeG(n,q)
         ps_1 = plan
-        lyambda*G@gradient
-        
+        tt = lyambda*G@gradient
+        for i in range(n):
+            ps_1[i].p = plan[i].p + tt[i]
+        return ps_1
 
     def optimize(self):
         plan = self.plan
         n = self.n_plan
         IcContinue = True
         while IcContinue:
-            q = len([1 for i in self.plan if i.p == 0 ])
+            IcContinue = True
+            q = len([1 for i in self.plan if np.abs(i.p) <= 1e-5 ])
             grad = self.Gradient(plan)
-            s_fi = 0
+            
+            s_fi = np.sum(grad[q+1:])/(n-q)
+            Gp_Grad = np.zeros(n)
+            for j in range(q+1,n):
+                Gp_Grad[j] = grad[j] - s_fi
+            flag = False
             for i in range(q + 1,n):
-                s_fi = grad[i]
                 for j in range(q + 1,n):
                     if grad[i] != grad[j]:
-                         IcContinue = False
-            s_fi = s_fi / (n - q)
+                        flag = True                            
+            if not flag:
+                IcContinue = False
             for j in range(q):
                 if s_fi - grad[j] <= 0 :
-                    IcContinue = False
-            if not IcContinue:
-                plan = self.NextPlan()
+                    IcContinue = True
+            if  IcContinue:
+                for i in range(n):
+                    plan[i].p = plan[i].p + 1* Gp_Grad[i]
+        return plan
 
 
 
